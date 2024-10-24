@@ -1,0 +1,10 @@
+{
+	"id": "randompic",
+	"name": "Random picture",
+	"version": "0.0.1",
+	"minAppVersion": "0.15.0",
+	"description": "Insert a random picture from Unsplash",
+	"author": "Obsidian",
+	"authorUrl": "https://github.com/smplgdev",
+	"isDesktopOnly": false
+}
