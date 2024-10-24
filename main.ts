@@ -5,10 +5,12 @@ import fetchRandomImage from "./services/unsplash"
 
 interface PluginSettings {
 	unsplashAccessKey: string;
+	query: string;
 }
 
 const DEFAULT_SETTINGS: PluginSettings = {
-	unsplashAccessKey: ''
+	unsplashAccessKey: '',
+	query: ''
 }
 
 export default class RandomPicPlugin extends Plugin {
@@ -39,7 +41,7 @@ export default class RandomPicPlugin extends Plugin {
 					return;
 				}
 
-				fetchRandomImage(unsplashAccessKey)
+				fetchRandomImage(unsplashAccessKey, this.settings.query)
 					.then( (image) => {
 						const cursor = editor.getCursor()
 						editor.setLine(cursor.line, `![Photo by ${image.author.username}(${image.author.links.html})](${image.url})`)
@@ -103,6 +105,17 @@ class RandomPicSettingTab extends PluginSettingTab {
 				.setValue(this.plugin.settings.unsplashAccessKey)
 				.onChange(async (value) => {
 					this.plugin.settings.unsplashAccessKey = value;
+					await this.plugin.saveSettings();
+				}));
+
+		new Setting(containerEl)
+			.setName('Default query')
+			.setDesc('Enter a default query to search for')
+			.addText(text => text
+				.setPlaceholder('Enter a default query')
+				.setValue(this.plugin.settings.query)
+				.onChange(async (value) => {
+					this.plugin.settings.query = value;
 					await this.plugin.saveSettings();
 				}));
 	}
